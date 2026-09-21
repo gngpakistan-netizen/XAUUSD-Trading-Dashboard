@@ -1,6 +1,6 @@
 import React from 'react';
 import { MacroFeedState } from '../types/quantum';
-import { ShieldCheck, Activity, Terminal, BookOpen, GitBranch, Cpu, Clock, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Activity, Terminal, BookOpen, GitBranch, Cpu, Clock, CheckCircle2, BarChart2 } from 'lucide-react';
 
 interface HeaderBarProps {
   currentPrice: number;
@@ -8,8 +8,11 @@ interface HeaderBarProps {
   onOpenHarness: () => void;
   onOpenDocs: () => void;
   onOpenTrace: () => void;
+  onOpenCalibration: () => void;
   harnessPassCount: number;
   harnessTotal: number;
+  calGradePct: number;
+  calGradeLabel: string;
 }
 
 export const HeaderBar: React.FC<HeaderBarProps> = ({
@@ -18,8 +21,11 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
   onOpenHarness,
   onOpenDocs,
   onOpenTrace,
+  onOpenCalibration,
   harnessPassCount,
-  harnessTotal
+  harnessTotal,
+  calGradePct,
+  calGradeLabel,
 }) => {
   // Session calculations with DST awareness
   const now = new Date();
@@ -85,8 +91,20 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         {/* Action Controls */}
         <div className="flex items-center gap-2 flex-shrink-0">
           <button
-            onClick={onOpenHarness}
+            onClick={onOpenCalibration}
             className="flex items-center gap-1.5 bg-indigo-950/60 hover:bg-indigo-900/80 text-indigo-200 border border-indigo-700/50 px-2.5 py-1 rounded transition-colors"
+            title="Open Platt WLS & Murphy Brier Calibration Engine"
+          >
+            <BarChart2 className="w-3.5 h-3.5 text-cyan-400" />
+            <span className="font-semibold">Calibration Audit</span>
+            <span className="bg-cyan-500/20 text-cyan-300 text-[10px] font-mono px-1 rounded">
+              {calGradePct}% {calGradeLabel}
+            </span>
+          </button>
+
+          <button
+            onClick={onOpenHarness}
+            className="flex items-center gap-1.5 bg-emerald-950/60 hover:bg-emerald-900/80 text-emerald-200 border border-emerald-700/50 px-2.5 py-1 rounded transition-colors"
             title="Execute Pine Script §16 Edge-Case Assertion Harness"
           >
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
